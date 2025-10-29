@@ -1,0 +1,197 @@
+{% extends "base.html" %}
+
+{% block title %}Admin Dashboard - PCE Faculty Portal{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="h2">Admin Dashboard</h1>
+    <div class="btn-toolbar mb-2 mb-md-0">
+        <span class="badge bg-success fs-6">ADMIN</span>
+    </div>
+</div>
+
+<!-- Welcome Card -->
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="card text-white welcome-card" style="background: linear-gradient(135deg, #28a745 0%, #20c997 100%);">
+            <div class="card-body">
+                <div class="row align-items-center">
+                    <div class="col-md-8">
+                        <h3 class="card-title">Welcome, {{ current_user.full_name }}!</h3>
+                        <p class="card-text">Administrator Dashboard - System Management Panel</p>
+                    </div>
+                    <div class="col-md-4 text-end">
+                        <div class="quick-actions">
+                            <span class="badge bg-light text-success fs-6">ADMINISTRATOR</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Admin Stats Cards -->
+<div class="row">
+    <div class="col-md-3 mb-4">
+        <div class="card text-center border-0 shadow-sm h-100">
+            <div class="card-body">
+                <div class="stat-icon mx-auto mb-3" style="width: 60px; height: 60px; border-radius: 50%; background: rgba(255, 193, 7, 0.2); display: flex; align-items: center; justify-content: center;">
+                    <i class="fas fa-clock fa-2x text-warning"></i>
+                </div>
+                <div class="stat-number display-4 fw-bold text-warning">{{ pending_count }}</div>
+                <div class="stat-title h5 text-muted">Pending Requests</div>
+                <small class="text-muted">Awaiting approval</small>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3 mb-4">
+        <div class="card text-center border-0 shadow-sm h-100">
+            <div class="card-body">
+                <div class="stat-icon mx-auto mb-3" style="width: 60px; height: 60px; border-radius: 50%; background: rgba(40, 167, 69, 0.2); display: flex; align-items: center; justify-content: center;">
+                    <i class="fas fa-users fa-2x text-success"></i>
+                </div>
+                <div class="stat-number display-4 fw-bold text-success">{{ total_faculty }}</div>
+                <div class="stat-title h5 text-muted">Total Faculty</div>
+                <small class="text-muted">Registered users</small>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3 mb-4">
+        <div class="card text-center border-0 shadow-sm h-100">
+            <div class="card-body">
+                <div class="stat-icon mx-auto mb-3" style="width: 60px; height: 60px; border-radius: 50%; background: rgba(23, 162, 184, 0.2); display: flex; align-items: center; justify-content: center;">
+                    <i class="fas fa-check-circle fa-2x text-info"></i>
+                </div>
+                <div class="stat-number display-4 fw-bold text-info">{{ approved_this_month }}</div>
+                <div class="stat-title h5 text-muted">Approved This Month</div>
+                <small class="text-muted">Leave requests</small>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3 mb-4">
+        <div class="card text-center border-0 shadow-sm h-100">
+            <div class="card-body">
+                <div class="stat-icon mx-auto mb-3" style="width: 60px; height: 60px; border-radius: 50%; background: rgba(108, 117, 125, 0.2); display: flex; align-items: center; justify-content: center;">
+                    <i class="fas fa-cog fa-2x text-secondary"></i>
+                </div>
+                <div class="stat-number display-4 fw-bold text-secondary">6</div>
+                <div class="stat-title h5 text-muted">System Modules</div>
+                <small class="text-muted">Active features</small>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Admin Quick Actions -->
+<div class="row mt-4">
+    <div class="col-12">
+        <div class="card shadow-sm">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0"><i class="fas fa-tasks me-2"></i>Administrative Functions</h5>
+            </div>
+            <div class="card-body">
+                <div class="row g-3">
+                    <div class="col-md-4">
+                        <a href="{{ url_for('admin_pending_requests') }}" class="text-decoration-none">
+                            <div class="card border-0 bg-warning text-white text-center h-100">
+                                <div class="card-body">
+                                    <i class="fas fa-tasks fa-2x mb-3"></i>
+                                    <h6>Pending Requests</h6>
+                                    <small>Review & Approve Leaves</small>
+                                    {% if pending_count > 0 %}
+                                    <div class="mt-2">
+                                        <span class="badge bg-danger">{{ pending_count }} pending</span>
+                                    </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-md-4">
+                        <a href="{{ url_for('admin_faculty_list') }}" class="text-decoration-none">
+                            <div class="card border-0 bg-success text-white text-center h-100">
+                                <div class="card-body">
+                                    <i class="fas fa-users fa-2x mb-3"></i>
+                                    <h6>Faculty Management</h6>
+                                    <small>View all faculty</small>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card border-0 bg-info text-white text-center h-100">
+                            <div class="card-body">
+                                <i class="fas fa-chart-bar fa-2x mb-3"></i>
+                                <h6>Reports & Analytics</h6>
+                                <small>Generate reports</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Quick Actions -->
+<div class="row mt-4">
+    <div class="col-12">
+        <div class="card shadow-sm">
+            <div class="card-header bg-secondary text-white">
+                <h5 class="mb-0"><i class="fas fa-bolt me-2"></i>Quick Actions</h5>
+            </div>
+            <div class="card-body">
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <a href="{{ url_for('admin_pending_requests') }}" class="btn btn-warning w-100 py-3">
+                            <i class="fas fa-tasks me-2"></i> Review Pending Requests
+                        </a>
+                    </div>
+                    <div class="col-md-6">
+                        <a href="{{ url_for('admin_faculty_list') }}" class="btn btn-success w-100 py-3">
+                            <i class="fas fa-users me-2"></i> View Faculty List
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- System Information -->
+<div class="row mt-4">
+    <div class="col-12">
+        <div class="card shadow-sm">
+            <div class="card-header bg-dark text-white">
+                <h5 class="mb-0"><i class="fas fa-info-circle me-2"></i>System Overview</h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <div class="alert alert-info">
+                            <h6><i class="fas fa-info-circle me-2"></i>System Status</h6>
+                            <p class="mb-1">All systems operational</p>
+                            <small class="text-muted">Last checked: Just now</small>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <div class="alert alert-success">
+                            <h6><i class="fas fa-check-circle me-2"></i>Database Status</h6>
+                            <p class="mb-1">Connected and running</p>
+                            <small class="text-muted">SQLite database active</small>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="text-center mt-4">
+                    <p class="text-muted">
+                        <i class="fas fa-shield-alt me-2"></i>
+                        Administrator privileges active
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

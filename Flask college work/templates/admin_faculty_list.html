@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <div class="dashboard-card">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2 class="mb-0">Faculty Management</h2>
+                <div>
+                    <a href="{{ url_for('admin_dashboard') }}" class="btn btn-outline-secondary">
+                        <i class="fas fa-arrow-left me-2"></i> Back to Dashboard
+                    </a>
+                </div>
+            </div>
+
+            {% if faculty_stats %}
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Faculty</th>
+                            <th>Department</th>
+                            <th>Email</th>
+                            <th>Medical Leaves</th>
+                            <th>Casual Leaves</th>
+                            <th>Earned Leaves</th>
+                            <th>Approved Leaves</th>
+                            <th>Pending Leaves</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for stat in faculty_stats %}
+                        <tr>
+                            <td>
+                                <div class="d-flex align-items-center">
+                                    <div class="user-avatar me-2" style="width: 35px; height: 35px; font-size: 0.8rem;">
+                                        {{ stat.faculty.full_name[0] }}{{ stat.faculty.full_name.split(' ')[1][0] if stat.faculty.full_name.split(' ')|length > 1 else stat.faculty.full_name[1] }}
+                                    </div>
+                                    <strong>{{ stat.faculty.full_name }}</strong>
+                                </div>
+                            </td>
+                            <td>{{ stat.faculty.department }}</td>
+                            <td>{{ stat.faculty.email }}</td>
+                            <td>
+                                <span class="badge bg-danger">{{ stat.faculty.medical_leave_left }}/{{ stat.faculty.medical_leave_total }}</span>
+                            </td>
+                            <td>
+                                <span class="badge bg-primary">{{ stat.faculty.casual_leave_left }}/{{ stat.faculty.casual_leave_total }}</span>
+                            </td>
+                            <td>
+                                <span class="badge bg-success">{{ stat.faculty.earned_leave_left }}/{{ stat.faculty.earned_leave_total }}</span>
+                            </td>
+                            <td>
+                                <span class="badge bg-success">{{ stat.approved_leaves }}</span>
+                            </td>
+                            <td>
+                                {% if stat.pending_leaves > 0 %}
+                                <span class="badge bg-warning">{{ stat.pending_leaves }}</span>
+                                {% else %}
+                                <span class="badge bg-secondary">0</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                <span class="badge bg-success">Active</span>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <div class="text-center py-5">
+                <i class="fas fa-users fa-4x text-muted mb-3"></i>
+                <h4 class="text-muted">No Faculty Found</h4>
+                <p class="text-muted">No faculty members are registered in the system.</p>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
